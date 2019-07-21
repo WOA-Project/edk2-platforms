@@ -116,7 +116,12 @@
   PciCf8Lib|MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
   PciLib|MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
   PlatformHookLib|MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf
-  SerialPortLib|MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
+  #SerialPortLib|MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
+
+  # ARM PL011 UART Driver
+  PL011UartClockLib|ArmPlatformPkg/Library/PL011UartClockLib/PL011UartClockLib.inf
+  PL011UartLib|ArmPlatformPkg/Library/PL011UartLib/PL011UartLib.inf
+  SerialPortLib|ArmPlatformPkg/Library/PL011SerialPortLib/PL011SerialPortLib.inf
 
   # Cryptographic libraries
   IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
@@ -365,16 +370,17 @@
   # will be reserved away.
   #
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00400000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x3FC00000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0xFFC00000
 
   ## NS16550 compatible UART
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x3f215040
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseMmio|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride|4
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate|500000000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialFifoControl|0x27
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialExtendedTxFifoSize|8
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0xfe201000
+  #gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseMmio|TRUE
+  #gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride|4
+  #gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate|500000000
+  #gEfiMdeModulePkgTokenSpaceGuid.PcdSerialFifoControl|0x27
+  #gEfiMdeModulePkgTokenSpaceGuid.PcdSerialExtendedTxFifoSize|8
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
+  gArmPlatformTokenSpaceGuid.PL011UartClkInHz|48000000
 
   ## Default Terminal Type
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
@@ -399,7 +405,7 @@
   # SD-related.
   #
 
-  gRaspberryPiTokenSpaceGuid.PcdSdIsArasan|L"SdIsArasan"|gConfigDxeFormSetGuid|0x0|0
+  gRaspberryPiTokenSpaceGuid.PcdSdIsArasan|L"SdIsArasan"|gConfigDxeFormSetGuid|0x0|1
   gRaspberryPiTokenSpaceGuid.PcdMmcForce1Bit|L"MmcForce1Bit"|gConfigDxeFormSetGuid|0x0|0
   gRaspberryPiTokenSpaceGuid.PcdMmcForceDefaultSpeed|L"MmcForceDefaultSpeed"|gConfigDxeFormSetGuid|0x0|0
   gRaspberryPiTokenSpaceGuid.PcdMmcSdDefaultSpeedMHz|L"MmcSdDefaultSpeedMHz"|gConfigDxeFormSetGuid|0x0|25

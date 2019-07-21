@@ -303,7 +303,7 @@ READ_LOCK_STATUS   = TRUE
   # FDT (GUID matches mRaspberryPiFfsFileGuid in RaspberryPiPlatformDxe)
   #
   FILE FREEFORM = DF5DA223-1D27-47C3-8D1B-9A41B55A18BC {
-    SECTION RAW = Platform/RaspberryPi/$(PLATFORM_NAME)/DeviceTree/bcm2710-rpi-3-b.dtb
+    SECTION RAW = Platform/RaspberryPi/$(PLATFORM_NAME)/DeviceTree/bcm2711-rpi-4-b.dtb
   }
 
 [FV.FVMAIN_COMPACT]

@@ -104,5 +104,6 @@
 #define RPI_MBOX_CLOCK_RATE_SDRAM                             0x000000008
 #define RPI_MBOX_CLOCK_RATE_PIXEL                             0x000000009
 #define RPI_MBOX_CLOCK_RATE_PWM                               0x00000000a
+#define RPI_MBOX_CLOCK_RATE_EMMC2                             0x00000000c
 
 #endif /* __RASPBERRY_PI_MAILBOX_H__ */
