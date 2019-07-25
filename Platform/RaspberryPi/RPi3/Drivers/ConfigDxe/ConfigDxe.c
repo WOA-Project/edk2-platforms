@@ -250,6 +250,12 @@ ApplyVariables (
    * No, I've not seen a problem, but having a group be
    * routed to two sets of pins seems like asking for trouble.
    */
+  GpioPinFuncSet (22, GPIO_FSEL_INPUT);
+  GpioPinFuncSet (23, GPIO_FSEL_INPUT);
+  GpioPinFuncSet (24, GPIO_FSEL_INPUT);
+  GpioPinFuncSet (25, GPIO_FSEL_INPUT);
+  GpioPinFuncSet (26, GPIO_FSEL_INPUT);
+  GpioPinFuncSet (27, GPIO_FSEL_INPUT);
   GpioPinFuncSet (34, GPIO_FSEL_INPUT);
   GpioPinFuncSet (35, GPIO_FSEL_INPUT);
   GpioPinFuncSet (36, GPIO_FSEL_INPUT);
@@ -277,7 +283,7 @@ ApplyVariables (
      */
     Gpio34Group = GPIO_FSEL_ALT3;
   }
-  GpioPinFuncSet (34, Gpio34Group);
+ /* GpioPinFuncSet (34, Gpio34Group);
   GpioPinFuncSet (35, Gpio34Group);
   GpioPinFuncSet (36, Gpio34Group);
   GpioPinFuncSet (37, Gpio34Group);
@@ -288,7 +294,7 @@ ApplyVariables (
   GpioPinFuncSet (50, Gpio48Group);
   GpioPinFuncSet (51, Gpio48Group);
   GpioPinFuncSet (52, Gpio48Group);
-  GpioPinFuncSet (53, Gpio48Group);
+  GpioPinFuncSet (53, Gpio48Group);*/
 
   /*
    * JTAG pin    JTAG sig    GPIO      Mode    Header pin

@@ -107,6 +107,8 @@
   CpuExceptionHandlerLib|ArmPkg/Library/ArmExceptionLib/ArmExceptionLib.inf
   ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
   DmaLib|Platform/RaspberryPi/$(PLATFORM_NAME)/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
+  #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
+  #ArmGicArchLib|ArmPkg/Library/ArmGicArchLib/ArmGicArchLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
   ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
@@ -164,6 +166,7 @@
   GpioLib|Silicon/Broadcom/Bcm283x/Library/GpioLib/GpioLib.inf
 
 [LibraryClasses.common.SEC]
+  #ArmGicArchLib|ArmPkg/Library/ArmGicArchSecLib/ArmGicArchSecLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   MemoryInitPeiLib|Platform/RaspberryPi/$(PLATFORM_NAME)/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
@@ -323,11 +326,16 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdRemovableMediaImageVerificationPolicy|0x04
 !endif
 
-  gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0x40000000
+  gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0xFF800000
+  # ARM Generic Interrupt Controller
+  gArmTokenSpaceGuid.PcdGicDistributorBase|0xFF841000
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFF842000
   gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|0x0
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|0x1
   gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum|0x2
   gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum|0x3
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|1000000 # 54000000
+  #gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -407,7 +415,7 @@
 
   gRaspberryPiTokenSpaceGuid.PcdSdIsArasan|L"SdIsArasan"|gConfigDxeFormSetGuid|0x0|1
   gRaspberryPiTokenSpaceGuid.PcdMmcForce1Bit|L"MmcForce1Bit"|gConfigDxeFormSetGuid|0x0|0
-  gRaspberryPiTokenSpaceGuid.PcdMmcForceDefaultSpeed|L"MmcForceDefaultSpeed"|gConfigDxeFormSetGuid|0x0|0
+  gRaspberryPiTokenSpaceGuid.PcdMmcForceDefaultSpeed|L"MmcForceDefaultSpeed"|gConfigDxeFormSetGuid|0x0|1
   gRaspberryPiTokenSpaceGuid.PcdMmcSdDefaultSpeedMHz|L"MmcSdDefaultSpeedMHz"|gConfigDxeFormSetGuid|0x0|25
   gRaspberryPiTokenSpaceGuid.PcdMmcSdHighSpeedMHz|L"MmcSdHighSpeedMHz"|gConfigDxeFormSetGuid|0x0|50
   gRaspberryPiTokenSpaceGuid.PcdMmcDisableMulti|L"MmcDisableMulti"|gConfigDxeFormSetGuid|0x0|0
@@ -516,6 +524,7 @@
 
   UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
   Silicon/Broadcom/Bcm283x/Drivers/InterruptDxe/InterruptDxe.inf
+  #ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   Platform/RaspberryPi/$(PLATFORM_NAME)/Drivers/RpiFirmwareDxe/RpiFirmwareDxe.inf
   Platform/RaspberryPi/$(PLATFORM_NAME)/Drivers/FdtDxe/FdtDxe.inf
   Platform/RaspberryPi/$(PLATFORM_NAME)/Drivers/ConfigDxe/ConfigDxe.inf

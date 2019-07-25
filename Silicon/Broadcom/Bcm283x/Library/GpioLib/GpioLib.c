@@ -51,6 +51,8 @@ GpioPinFuncSet (
 
   ASSERT (Pin < GPIO_PINS);
   ASSERT (Function <= GPIO_FSEL_MASK);
+  
+  MmioWrite32(GPIO_MAGIC, MmioRead32(GPIO_MAGIC) | 2);
 
   RegIndex = Pin / 10;
   SelIndex = Pin % 10;

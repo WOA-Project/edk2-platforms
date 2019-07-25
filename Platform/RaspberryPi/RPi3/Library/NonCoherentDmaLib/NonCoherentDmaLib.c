@@ -291,7 +291,83 @@ DmaAllocateBuffer (
   OUT VOID                         **HostAddress
   )
 {
-  return DmaAllocateAlignedBuffer (MemoryType, Pages, 0, HostAddress);
+    EFI_GCD_MEMORY_SPACE_DESCRIPTOR   GcdDescriptor;
+  VOID                              *Allocation;
+  EFI_PHYSICAL_ADDRESS              Memory;
+  UINT64                            MemType;
+  UNCACHED_ALLOCATION               *Alloc;
+  EFI_STATUS                        Status;
+
+  if (HostAddress == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Memory = 0x3C000000;
+  Status = gBS->AllocatePages (AllocateMaxAddress, MemoryType, Pages, &Memory);
+  if (EFI_ERROR (Status)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+  
+  Allocation = (VOID*)(UINTN) Memory;
+
+  if (Allocation == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  // Get the cacheability of the region
+  Status = gDS->GetMemorySpaceDescriptor ((UINTN)Allocation, &GcdDescriptor);
+  if (EFI_ERROR(Status)) {
+    goto FreeBuffer;
+  }
+
+  // Choose a suitable uncached memory type that is supported by the region
+  if (GcdDescriptor.Capabilities & EFI_MEMORY_WC) {
+    MemType = EFI_MEMORY_WC;
+  } else if (GcdDescriptor.Capabilities & EFI_MEMORY_UC) {
+    MemType = EFI_MEMORY_UC;
+  } else {
+    Status = EFI_UNSUPPORTED;
+    goto FreeBuffer;
+  }
+
+  Alloc = AllocatePool (sizeof *Alloc);
+  if (Alloc == NULL) {
+    goto FreeBuffer;
+  }
+
+  Alloc->HostAddress = Allocation;
+  Alloc->NumPages = Pages;
+  Alloc->Attributes = GcdDescriptor.Attributes;
+
+  InsertHeadList (&UncachedAllocationList, &Alloc->Link);
+
+  // Remap the region with the new attributes
+  Status = gDS->SetMemorySpaceAttributes ((PHYSICAL_ADDRESS)(UINTN)Allocation,
+                                          EFI_PAGES_TO_SIZE (Pages),
+                                          MemType);
+  if (EFI_ERROR (Status)) {
+    goto FreeAlloc;
+  }
+
+  Status = mCpu->FlushDataCache (mCpu,
+                                 (PHYSICAL_ADDRESS)(UINTN)Allocation,
+                                 EFI_PAGES_TO_SIZE (Pages),
+                                 EfiCpuFlushTypeInvalidate);
+  if (EFI_ERROR (Status)) {
+    goto FreeAlloc;
+  }
+
+  *HostAddress = Allocation;
+
+  return EFI_SUCCESS;
+
+FreeAlloc:
+  RemoveEntryList (&Alloc->Link);
+  FreePool (Alloc);
+
+FreeBuffer:
+  FreePages (Allocation, Pages);
+  return Status;
 }
 
 /**

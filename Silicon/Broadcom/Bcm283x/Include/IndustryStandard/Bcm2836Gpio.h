@@ -25,6 +25,8 @@
 #define GPIO_GPSET0        (GPIO_BASE_ADDRESS + 0x1C)
 #define GPIO_GPSET1        (GPIO_BASE_ADDRESS + 0x20)
 
+#define GPIO_MAGIC         (GPIO_BASE_ADDRESS + 0xD0)
+
 #define GPIO_FSEL_INPUT    0x0
 #define GPIO_FSEL_OUTPUT   0x1
 #define GPIO_FSEL_ALT0     0x4
